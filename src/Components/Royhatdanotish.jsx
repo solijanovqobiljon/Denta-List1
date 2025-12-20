@@ -13,7 +13,8 @@ function Royhatdanotish() {
   } = useForm({
     defaultValues: {
       phone: ''
-    }
+    },
+    mode: 'onChange' // Yozish davomida tekshirib borish uchun
   });
 
   const formatPhoneNumber = (value) => {
@@ -29,12 +30,11 @@ function Royhatdanotish() {
       }
     }
 
-    return '+998 ' + digits;
+    return digits.length > 0 ? '+998 ' + digits : '';
   };
 
   const onSubmit = (data) => {
     console.log("Telefon raqam:", data.phone);
-
     navigate('/sms', {
       state: {
         phone: data.phone
@@ -54,16 +54,15 @@ function Royhatdanotish() {
         </label>
 
         <div className="mt-[3px] relative">
-          <FaPhoneAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8E8E93]" />
+          {/* Ikonka rangi xatolikka qarab o'zgaradi */}
+          <FaPhoneAlt className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${errors.phone ? 'text-red-500' : 'text-[#8E8E93]'}`} />
 
           <Controller
             name="phone"
             control={control}
             rules={{
-              required: "Telefon raqam majburiy",
-              validate: value =>
-                value.replace(/\D/g, '').length === 12 ||
-                "Telefon raqam to‘liq emas"
+              required: true,
+              validate: value => value.replace(/\D/g, '').length === 12
             }}
             render={({ field }) => (
               <input
@@ -74,24 +73,22 @@ function Royhatdanotish() {
                   field.onChange(formatPhoneNumber(e.target.value))
                 }
                 className={`w-full h-[50px] border-[2px] rounded-[13px]
-                  pl-[40px] text-[20px] font-semibold text-[#6155F5]
+                  pl-[40px] text-[20px] font-semibold transition-all
                   focus:outline-none
-                  ${errors.phone ? 'border-red-500' : 'border-[#3353FF]'}`}
+                  ${errors.phone 
+                    ? 'border-red-500 text-red-500 bg-red-50' 
+                    : 'border-[#3353FF] text-[#6155F5]'}`}
               />
             )}
           />
         </div>
 
-        {errors.phone && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.phone.message}
-          </p>
-        )}
+        {/* Xatolik xabari (errors.phone.message) olib tashlandi */}
 
         <button
           type="submit"
           className="w-full h-[55px] bg-[#00BCE4] text-white text-[18px]
-                     font-semibold rounded-[13px] mt-[25px]"
+                     font-semibold rounded-[13px] mt-[25px] active:scale-95 transition-transform"
         >
           Keyingi
         </button>
@@ -99,7 +96,7 @@ function Royhatdanotish() {
 
       <div className="mt-[50px] text-center">
         <p className="text-[#A3AED0]">Ilovadan avval foydalanganmisiz?</p>
-        <Link to="/login" className="text-[#00BCE4] font-semibold">
+        <Link to="/login" className="text-[#00BCE4] font-semibold hover:underline">
           Akkauntga kirish
         </Link>
       </div>

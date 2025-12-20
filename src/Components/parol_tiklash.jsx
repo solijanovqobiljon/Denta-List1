@@ -37,30 +37,24 @@ function SmsVerification() {
               type="text"
               placeholder="- - - - - -"
               {...register("smsCode", {
-                required: "Kod majburiy",
-                pattern: {
-                  value: /^[0-9]{6}$/,
-                  message: "Kod 6 xonali raqam bo‘lishi kerak"
-                }
+                required: true,
+                pattern: /^[0-9]{6}$/
               })}
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
               }}
-              className="w-full h-[60px] border-2 border-[#3353FF] rounded-[10px]
-                         text-[#3353FF] text-2xl text-center font-medium tracking-[0.5em]
-                         focus:outline-none"
+              className={`w-full h-[60px] border-2 rounded-[10px] text-2xl text-center font-medium tracking-[0.5em] focus:outline-none transition-colors
+                ${errors.smsCode 
+                  ? 'border-red-500 text-red-500' 
+                  : 'border-[#3353FF] text-[#3353FF]'}`}
             />
           </div>
 
-          {errors.smsCode && (
-            <p className="text-red-500 text-sm text-center mb-4">
-              {errors.smsCode.message}
-            </p>
-          )}
+          {/* Xatolik matni o'chirildi */}
 
           <button
             type="submit"
-            className="w-full h-[55px] bg-[#00BCE4] text-white text-[18px] font-semibold rounded-[10px] mb-4"
+            className="w-full h-[55px] bg-[#00BCE4] text-white text-[18px] font-semibold rounded-[10px] mb-4 active:scale-95 transition-transform"
           >
             Keyingi
           </button>

@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form';
 
 function Yangilash() {
   const navigate = useNavigate();
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
+    mode: 'onChange' // Yozayotganda tekshirib borishi uchun
+  });
 
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -38,12 +40,15 @@ function Yangilash() {
             <div className='relative'>
               <input
                 type={showNewPassword ? "text" : "password"}
-                placeholder=""
+                placeholder="Kamida 6 belgi"
                 {...register("newPassword", {
-                  required: "Parol majburiy",
-                  minLength: { value: 6, message: "Parol kamida 6 belgi bo‘lishi kerak" }
+                  required: true,
+                  minLength: 6
                 })}
-                className='w-full h-[55px] border-2 border-gray-300 rounded-[15px] pl-4 pr-12 text-lg focus:border-[#3353FF] focus:outline-none transition'
+                className={`w-full h-[55px] border-2 rounded-[15px] pl-4 pr-12 text-[15px] focus:outline-none transition-all
+                  ${errors.newPassword 
+                    ? 'border-red-500 bg-red-50' 
+                    : 'border-gray-300 focus:border-[#3353FF]'}`}
               />
               <div
                 className='absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 text-xl'
@@ -52,9 +57,6 @@ function Yangilash() {
                 {showNewPassword ? <FaEyeSlash /> : <FaEye />}
               </div>
             </div>
-            {errors.newPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.newPassword.message}</p>
-            )}
           </div>
 
           {/* CONFIRM PAROL */}
@@ -65,13 +67,15 @@ function Yangilash() {
             <div className='relative'>
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder=""
+                placeholder="Tasdiqlash"
                 {...register("confirmPassword", {
-                  required: "Parolni tasdiqlash majburiy",
-                  validate: (value) =>
-                    value === newPassword || "Parollar mos kelmadi"
+                  required: true,
+                  validate: (value) => value === newPassword
                 })}
-                className='w-full h-[55px] border-2 border-gray-300 rounded-[15px] pl-4 pr-12 text-lg focus:border-[#3353FF] focus:outline-none transition bg-white'
+                className={`w-full h-[55px] border-2 rounded-[15px] pl-4 pr-12 text-[15px] focus:outline-none transition-all
+                  ${errors.confirmPassword 
+                    ? 'border-red-500 bg-red-50' 
+                    : 'border-gray-300 focus:border-[#3353FF]'}`}
               />
               <div
                 className='absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 text-xl'
@@ -80,14 +84,11 @@ function Yangilash() {
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </div>
             </div>
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
-            )}
           </div>
 
           <button
             type="submit"
-            className='w-full h-[55px] bg-[#00BCE4] text-white text-[18px] font-semibold rounded-[15px] shadow-md hover:opacity-90 transition duration-200 mb-4'
+            className='w-full h-[55px] bg-[#00BCE4] text-white text-[18px] font-semibold rounded-[15px] shadow-md hover:opacity-90 active:scale-95 transition duration-200 mb-4'
           >
             Saqlash
           </button>
@@ -95,7 +96,7 @@ function Yangilash() {
 
         <button
           onClick={() => navigate('/login')}
-          className='w-full h-[55px] border-2 border-[#00BCE4] text-[#00BCE4] text-[18px] font-semibold rounded-[15px] bg-white hover:bg-gray-50 transition duration-200'
+          className='w-full h-[55px] border-2 border-[#00BCE4] text-[#00BCE4] text-[18px] font-semibold rounded-[15px] bg-white hover:bg-gray-50 active:scale-95 transition duration-200'
         >
           Bekor qilish
         </button>
