@@ -16,16 +16,10 @@ function Royhatdanotish() {
   // 📱 Telefon formatlash
   const formatPhone = (value) => {
     const digits = value.replace(/\D/g, '').slice(0, 9);
-    if (digits.length === 0) return "";
-    
-    const match = digits.match(/(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})/);
-    let result = "+998";
-    if (match[1]) result += ` ${match[1]}`;
-    if (match[2]) result += ` ${match[2]}`;
-    if (match[3]) result += `-${match[3]}`;
-    if (match[4]) result += `-${match[4]}`;
-    
-    return result;
+    if (digits.length < 9) return digits;
+    const match = digits.match(/(\d{2})(\d{3})(\d{2})(\d{2})$/);
+    if (!match) return value;
+    return `+998 ${match[1]} ${match[2]}-${match[3]}-${match[4]}`;
   };
 
   const onSubmit = (data) => {
@@ -45,32 +39,34 @@ function Royhatdanotish() {
         </label>
 
         <div className="mt-[3px] relative">
-          <FaPhoneAlt className={`absolute left-3 top-1/2 -translate-y-1/2 text-[18px] transition-colors ${errors.phone ? 'text-red-500' : 'text-[#8E8E93]'}`} />
+          {/* Telefon ikonkasi rangi ham xato bo'lganda o'zgarishi mumkin */}
+          <FaPhoneAlt className={`absolute left-3 top-1/2 -translate-y-1/2 text-[18px] transition-colors ${errors.phone ? 'text-gray-400' : 'text-[#8E8E93]'}`} />
 
           <input
             type="tel"
             placeholder="+998 99 111-44-56"
             {...register("phone", {
-              required: true,
-              validate: (value) => value?.replace(/\D/g, '').length === 12
+              required: true, // Xabar kerak emas, shunchaki true
+              validate: (value) => value.replace(/\D/g, '').length === 12
             })}
             onInput={(e) => {
               const formatted = formatPhone(e.target.value);
-              setValue("phone", formatted, { shouldValidate: true });
+              setValue("phone", formatted, { shouldValidate: true }); // Yozganda tekshirib boradi
             }}
-            className={`w-full h-[50px] border-[2px] rounded-[13px] pl-[40px] text-[20px] font-semibold transition-colors focus:outline-none placeholder:text-[#6155F5]/50
+            // Bu yerda dinamik klass qo'shildi
+            className={`w-full h-[50px] border-[2px] rounded-[13px] pl-[40px] text-[20px] font-semibold transition-all focus:outline-none placeholder:text-[#6155F5]/50
               ${errors.phone 
                 ? 'border-red-500 text-red-500' 
-                : 'border-[#3353FF] text-[#6155F5]'}`}
+                : 'border-[#3353FF] text-[#6155F5] focus:border-[#3353FF]'}`}
           />
         </div>
 
-        {/* Xatolik xabari (errors.phone) olib tashlandi */}
+        {/* Xatolik yozuvi olib tashlandi */}
 
         <button
           type="submit"
           className="w-full h-[55px] bg-[#00BCE4] text-white text-[18px] font-semibold
-                     rounded-[13px] mt-[25px] shadow-lg active:scale-95 hover:bg-opacity-90 transition"
+                     rounded-[13px] mt-[25px] shadow-lg hover:bg-opacity-90 active:scale-95 transition-all"
         >
           Keyingi
         </button>

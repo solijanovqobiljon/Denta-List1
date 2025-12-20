@@ -45,7 +45,7 @@ function SmsVerification() {
               }}
               className={`w-full h-[60px] border-2 rounded-[10px] text-2xl text-center font-medium tracking-[0.5em] focus:outline-none transition-colors
                 ${errors.smsCode 
-                  ? 'border-red-500 text-red-500' 
+                  ? 'border-red-500 text-gray-400' 
                   : 'border-[#3353FF] text-[#3353FF]'}`}
             />
           </div>

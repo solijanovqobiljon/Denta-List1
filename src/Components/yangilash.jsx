@@ -5,8 +5,16 @@ import { useForm } from 'react-hook-form';
 
 function Yangilash() {
   const navigate = useNavigate();
-  const { register, handleSubmit, watch, formState: { errors } } = useForm({
-    mode: 'onChange' // Yozayotganda tekshirib borishi uchun
+  
+  // Nozik nuqta: re-validation rejimini 'onChange' qilish yaxshi, 
+  // lekin 'onTouched' yoki 'onBlur' ham foydali bo'lishi mumkin
+  const { 
+    register, 
+    handleSubmit, 
+    watch, 
+    formState: { errors } 
+  } = useForm({
+    mode: 'onChange' 
   });
 
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -16,11 +24,13 @@ function Yangilash() {
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   const onSubmit = (data) => {
+    // Alert o'rniga zamonaviyroq bildirishnoma ishlatishni maslahat beraman (masalan, react-toastify)
     console.log("Yangi Parol:", data.newPassword);
     alert("Parolingiz muvaffaqiyatli yangilandi!");
     navigate('/login');
   };
 
+  // Watch funksiyasi input qiymatini kuzatadi
   const newPassword = watch('newPassword');
 
   return (
@@ -30,7 +40,7 @@ function Yangilash() {
           Parolni yangilang
         </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
 
           {/* YANGI PAROL */}
           <div className="mb-6">
@@ -45,13 +55,14 @@ function Yangilash() {
                   required: true,
                   minLength: 6
                 })}
-                className={`w-full h-[55px] border-2 rounded-[15px] pl-4 pr-12 text-[15px] focus:outline-none transition-all
+                // text-lg o'rniga text-[16px] ishlatish mobil qurilmalarda avto-zoomni oldini oladi
+                className={`w-full h-[55px] border-2 rounded-[15px] pl-4 pr-12 text-[16px] focus:outline-none transition-all
                   ${errors.newPassword 
                     ? 'border-red-500 bg-red-50' 
                     : 'border-gray-300 focus:border-[#3353FF]'}`}
               />
               <div
-                className='absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 text-xl'
+                className='absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 text-xl p-1'
                 onClick={toggleNewPasswordVisibility}
               >
                 {showNewPassword ? <FaEyeSlash /> : <FaEye />}
@@ -70,15 +81,16 @@ function Yangilash() {
                 placeholder="Tasdiqlash"
                 {...register("confirmPassword", {
                   required: true,
-                  validate: (value) => value === newPassword
+                  // validate funksiyasida bo'sh qiymatni ham tekshirib ketish xatolikni kamaytiradi
+                  validate: (value) => value === newPassword || "Parollar mos kelmadi"
                 })}
-                className={`w-full h-[55px] border-2 rounded-[15px] pl-4 pr-12 text-[15px] focus:outline-none transition-all
+                className={`w-full h-[55px] border-2 rounded-[15px] pl-4 pr-12 text-[16px] focus:outline-none transition-all
                   ${errors.confirmPassword 
                     ? 'border-red-500 bg-red-50' 
                     : 'border-gray-300 focus:border-[#3353FF]'}`}
               />
               <div
-                className='absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 text-xl'
+                className='absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 text-xl p-1'
                 onClick={toggleConfirmPasswordVisibility}
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -95,6 +107,7 @@ function Yangilash() {
         </form>
 
         <button
+          type="button" // Tugmaga type="button" qo'shish formni bexosdan submit bo'lishidan saqlaydi
           onClick={() => navigate('/login')}
           className='w-full h-[55px] border-2 border-[#00BCE4] text-[#00BCE4] text-[18px] font-semibold rounded-[15px] bg-white hover:bg-gray-50 active:scale-95 transition duration-200'
         >

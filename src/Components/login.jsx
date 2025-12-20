@@ -50,7 +50,7 @@ function Login() {
                 className={`w-full h-[50px] border rounded-[10px] pl-12 pr-4 text-lg focus:outline-none transition-colors 
                   ${errors.login ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-[#3353FF]'}`}
               />
-              <FaUser className={`absolute left-4 top-1/2 -translate-y-1/2 text-xl ${errors.login ? 'text-red-400' : 'text-gray-400'}`} />
+              <FaUser className={`absolute left-4 top-1/2 -translate-y-1/2 text-xl ${errors.login ? 'text-gray-400' : 'text-gray-400'}`} />
             </div>
           </div>
 
@@ -67,7 +67,7 @@ function Login() {
                 className={`w-full h-[50px] border rounded-[10px] pl-12 pr-12 text-lg bg-gray-50 focus:outline-none transition-colors
                   ${errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-[#3353FF]'}`}
               />
-              <FaLock className={`absolute left-4 top-1/2 -translate-y-1/2 text-xl ${errors.password ? 'text-red-400' : 'text-gray-400'}`} />
+              <FaLock className={`absolute left-4 top-1/2 -translate-y-1/2 text-xl ${errors.password ? 'text-gray-400' : 'text-gray-400'}`} />
               <div
                 className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 text-xl"
                 onClick={togglePasswordVisibility}
